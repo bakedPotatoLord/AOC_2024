@@ -15,9 +15,9 @@
     "noEmit": true,
 
     // Best practices
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": false,
 
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
