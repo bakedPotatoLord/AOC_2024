@@ -25,6 +25,7 @@ function decrease(arr:any[]){
   return true
 }
 
+console.log("part 1:",valid.length)
 
 let possible = 0
 
@@ -40,4 +41,4 @@ for(let i=0;i<raw.length;i++){
 
 
  
-console.log(possible)  
+console.log("part 2:", possible)  
