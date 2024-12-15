@@ -14,7 +14,7 @@ const raw = (await getInput(13))
 const raw2  = structuredClone(raw)
 
 for(let l of raw2){
-  l[2] = <vec2>l[2].map(n=>n+10000000000000)
+  l[2] = <vec2>l[2].map(n=>n+10_000_000_000_000)
 }
 
 // console.log(raw2)
@@ -24,8 +24,8 @@ let tokens = []
 for(let nums of raw){ 
   const coefficients = [[nums[0][0], nums[1][0]], [nums[0][1], nums[1][1]]];
   const constants = nums[2];
-  // const x1 = coefficients[0][0]
-  // const x2 = coefficients[1][0]
+  const x1 = coefficients[0][0]
+  const x2 = coefficients[1][0]
   // const y1 = coefficients[0][1]
   // const y2 = coefficients[1][1]
   const x1a = coefficients[0][0]/constants[0]
@@ -37,9 +37,10 @@ for(let nums of raw){
   const ydiff = Math.abs(y1a - y2a)
   
   if(xdiff < 0.000000001 && ydiff < 0.0000000001){
-    console.log("lines overlap")
+    // console.log("lines overlap")
+    console.log(x1,x2,constants[0])
     const targetx = constants[0]
-    let currX = 0
+
   }
   
   const solution = math.lusolve(coefficients, constants);
@@ -55,7 +56,7 @@ function nearInt(n: number) {
 
 const costs2 = tokens.map(t => t[0]*3 + t[1])
 
-console.log(numberSum(costs2)) 
+console.log("part 1:",numberSum(costs2)) 
 
 //a button costs 3
 //b button costs 1
@@ -74,11 +75,16 @@ for(let nums of raw2){
   const y1a = coefficients[0][1]/constants[0]
   const y2a = coefficients[1][1]/constants[1] 
 
+  // x1/cx == 
+
   const xdiff = Math.abs(x1a - x2a)
   const ydiff = Math.abs(y1a - y2a)
   
-  if(xdiff < 0.000000001 && ydiff < 0.0000000001){
-    console.log("lines overlap")
+  if(xdiff < 0.0000000000000000001 && ydiff < 0.000000000000000000001){
+
+    console.log("lines overlap",)
+    console.log(xdiff,ydiff)
+
     const targetx = constants[0]
     let currX = 0
   }
@@ -92,6 +98,6 @@ for(let nums of raw2){
 
 const costs = tokens.map(t => t[0]*3 + t[1])
 
-console.log(numberSum(costs)) 
+console.log("part 2:",numberSum(costs))  
 
 //higher than 875318608908
