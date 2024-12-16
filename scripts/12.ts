@@ -1,4 +1,5 @@
-import {getInput, numberSum, type vec2} from './helpers'
+import {getInput, numberSum} from './helpers'
+type vec2 = [number, number]
 
 const raw = (await getInput(12))
 .split("\n")
