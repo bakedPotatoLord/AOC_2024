@@ -1,5 +1,8 @@
 
-import {dispMatrix, getInput, numberSum, vectorAdd, type vec2} from './helpers'
+import {dispMatrix, getInput, numberSum, } from './helpers'
+
+type vec2 = [number, number]
+
 
 const raw = (await getInput(10))
 .split("\n")
@@ -95,3 +98,7 @@ for(let head of heads){
 //1477
 
 console.log("p2:",ratingsum)   
+
+export function vectorAdd(v1:vec2,v2:vec2):vec2{
+  return [v1[0]+v2[0],v1[1]+v2[1]]
+}

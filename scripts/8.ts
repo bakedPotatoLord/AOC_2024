@@ -1,4 +1,5 @@
-import { dispMatrix, getInput, numberSum, type vec2 } from './helpers'
+import { dispMatrix, getInput, numberSum } from './helpers'
+type vec2 = [number, number]
 
 const raw = (await getInput(8))
   .split("\n")

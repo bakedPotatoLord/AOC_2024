@@ -1,4 +1,6 @@
-import {getInput, numberSum, vectorEquals, type vec2} from './helpers'
+import {getInput, numberSum, vectorEquals, } from './helpers'
+
+type vec2 = [number, number]
 
 import  * as math from 'mathjs'
 
