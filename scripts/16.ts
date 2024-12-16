@@ -66,7 +66,7 @@ while(q.length > 0){
   
 }
 
-const lowest = vec2.dirs.map(d => scoreMap.get(toHash([end,d]))).reduce((a,b) => Math.min(a,b))
+const lowest = vec2.dirs4.map(d => scoreMap.get(toHash([end,d]))).reduce((a,b) => Math.min(a,b))
 
 console.log("part1:",lowest) 
 
