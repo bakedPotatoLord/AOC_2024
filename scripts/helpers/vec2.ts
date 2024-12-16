@@ -87,6 +87,27 @@ export default class vec2 extends Array<number>{
     return this
   }
 
+  public cadd(v:vec2){
+    return new vec2(this[0]+v[0],this[1]+v[1])
+  }
+  public csub(v:vec2){
+    return new vec2(this[0]-v[0],this[1]-v[1])
+  }
+  public cmul(v:vec2){
+    return new vec2(this[0]*v[0],this[1]*v[1])
+  }
+  public cdiv(v:vec2){
+    return new vec2(this[0]/v[0],this[1]/v[1])
+  }
+
+  public dot(v:vec2){
+    return this[0]*v[0]+this[1]*v[1]
+  }
+
+  public cross(v:vec2){
+    return this[0]*v[1]-this[1]*v[0]
+  }
+
   public equals(v:vec2){
     return this[0] == v[0] && this[1] == v[1]
   }
