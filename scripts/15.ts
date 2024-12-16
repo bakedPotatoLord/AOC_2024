@@ -1,4 +1,4 @@
-import {dispMatrix, getInput, numberSum, vectorAdd, vectorEquals, vectorSub, type vec2} from './helpers'
+import {dispMatrix, getInput, numberSum, vectorAdd, vectorEquals, vectorSub,convertSign, type vec2} from './helpers'
 
 
 const raw = (await getInput(15))
@@ -21,12 +21,7 @@ function onMatrix(i: number, j: number) {
   return i >= 0 && i < mx.length && j >= 0 && j < mx[0].length
 }
 
-function convertSign(char: string) {
-  if(char == ">") return <vec2>[0,1]
-  else if(char == "<") return <vec2>[0,-1]
-  else if(char == "v") return <vec2>[1,0]
-  else if(char == "^") return <vec2>[-1,0]
-}
+
 
 for(let move of moves){
   let lookPos = vectorAdd(robot, [0,0])
@@ -99,16 +94,11 @@ function doMove(pos:vec2,move:vec2,char:string) {
   const next = vectorAdd(pos, move)
   const val = mxc[next[0]][next[1]]
   if(val == "."){
-    //do nothing  
-    // console.log("empty val",mxc[next[0]][next[1]],mxc[pos[0]][pos[1]])
     mxc[next[0]][next[1]] =mxc[pos[0]][pos[1]]
-
     mxc[pos[0]][pos[1]] = char
-
   }else if(move[0]=== 0){ // if moving horisontal, 
     doMove(next, move, mxc[pos[0]][pos[1]])
     mxc[pos[0]][pos[1]] = char
-
   } 
   else if(move[1] === 0){ // if moving vertical, need to check boxes
     if(val == "["){
@@ -116,24 +106,15 @@ function doMove(pos:vec2,move:vec2,char:string) {
       doMove(next, move, mxc[pos[0]][pos[1]])
       doMove(otherBox, move, mxc[pos[0]][pos[1]])
       mxc[otherBox[0]][otherBox[1]] = '.'
-
       mxc[next[0]][next[1]] = mxc[pos[0]][pos[1]]
     }else if(val == "]"){
       const otherBox = vectorAdd(next,[0,-1])
-
       doMove(next, move, mxc[pos[0]][pos[1]])
       doMove(otherBox, move, mxc[pos[0]][pos[1]])
       mxc[otherBox[0]][otherBox[1]] = '.'
-
       mxc[next[0]][next[1]] = mxc[pos[0]][pos[1]]
-
-
-    }else{
-      // console.log("aaah",val)
     }
-
   }
-  // console.log("moving", char)
 }
 
 
@@ -144,28 +125,15 @@ for(let i = 0;i<mxc.length;i++){
 }
 
 for(let move of moves){
-  // console.log("robot", robot)
-  // console.log("move", move)
   const movable = checkMove(robot, move)
-  // console.log("move possible",movable)
   if(movable){
     doMove(robot, move, ".")
     mxc[robot[0]][robot[1]] = "."
     robot = vectorAdd(robot, move)
   }
-  // dispMatrix(mxc)
-
 }
-
-for(let i = 0;i<mxc.length;i++){
-  for(let j= 0;j<mxc[0].length;j++){
-    if(mxc[i][j] == '[') robot = [i,j]
-  }
-}
-
 
 let count2 = 0
-
 for(let i = 0;i<mxc.length;i++){
   for(let j= 0;j<mxc[0].length;j++){ 
     if(mxc[i][j] == '['){
@@ -173,10 +141,5 @@ for(let i = 0;i<mxc.length;i++){
     } 
   }
 }
-
-// dispMatrix(mx)
-
 dispMatrix(mxc)
-
-
 console.log("part 2:",count2)
