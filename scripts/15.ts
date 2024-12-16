@@ -1,5 +1,27 @@
-import {dispMatrix, getInput, numberSum, vectorAdd, vectorEquals, vectorSub,convertSign, type vec2} from './helpers'
+import {dispMatrix, getInput, numberSum, } from './helpers'
 
+
+function vectorAdd(v1:vec2,v2:vec2):vec2{
+  return [v1[0]+v2[0],v1[1]+v2[1]]
+}
+
+function vectorSub(v1:vec2,v2:vec2):vec2{
+  return [v1[0]-v2[0],v1[1]-v2[1]]
+}
+
+function convertSign(char: string) {
+  if(char == ">") return <vec2>[0,1]
+  else if(char == "<") return <vec2>[0,-1]
+  else if(char == "v") return <vec2>[1,0]
+  else if(char == "^") return <vec2>[-1,0]
+}
+
+function vectorEquals(v1:vec2,v2:vec2):boolean{
+  return v1[0] == v2[0] && v1[1] == v2[1]
+}
+
+
+type vec2 = [number, number]
 
 const raw = (await getInput(15))
 .split("\n\n")
