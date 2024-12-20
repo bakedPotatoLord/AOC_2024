@@ -1,16 +1,28 @@
-import {dispMatrix, getInput, numberSum, vectorAdd, vectorEquals, type vec2} from './helpers'
+import {dispMatrix, getInput, numberSum, v2, vectorEquals, vec2} from './helpers'
 
 import  * as math from 'mathjs'
 
 const raw = (await getInput(14))
 .split("\n")
 .map(sl=>sl.split(/,|\:\ |\=|\+|\ / ))
-.map((a)=><vec2[]>[[Number(a[2]),Number(a[1])],[Number(a[5]),Number(a[4])]])
+.map((a)=>[v2(a[2],a[1]),v2(a[5],a[4])])
 
-const heightMax = 103
 
-const widthMax = 101
 
+let heightMax = 0
+let widthMax = 0
+
+for(let [[i,j]] of raw){
+  heightMax = Math.max(heightMax,i)
+  widthMax = Math.max(widthMax,j)
+}
+
+heightMax++
+widthMax++
+
+function mod(n:number, m:number) {
+  return ((n % m) + m) % m;
+}
 
 function outside(pos:vec2){
   return pos[1] < 0 || pos[1] > widthMax || pos[0] < 0 || pos[0] > heightMax
@@ -38,57 +50,51 @@ for(let i = 0; i < runs+1; i++){
     pos[0] += vel[0]
     pos[1] += vel[1]
     
-
-    while(pos[0]< 0){
-      pos[0]+=heightMax
-      // console.log(pos[0])
-    }
-    while(pos[1]<0){
-      pos[1]+=widthMax 
-    }
-
-    pos[0] =  pos[0] % heightMax 
-    pos[1] =  pos[1] % widthMax
-
+    pos[0] =  mod(pos[0] , heightMax )
+    pos[1] =  mod(pos[1] , widthMax )
   }
-  
-  // console.log(i)
-  
+
+  // let copy = structuredClone(mx)
+
+  // for(let i = 0; i < copy.length; i++){
+  //   for(let j = 0; j < copy[0].length; j++){
+  //     if(copy[i][j] == 0) mx[i][j] = "."
+  //   }
+  // }
+  // dispMatrix(copy) 
 }
 
-// dispMatrix(mx) 
 
 let regions = Array(4).fill(0)
 
 const iCenter = Math.floor(heightMax/2)
 const jCenter = Math.floor(widthMax/2)
 
-for(let [pos] of raw){
-  
-  if(pos[0] == iCenter || pos[1] == jCenter){
-    continue
-  }
-  else if(pos[0] < iCenter && pos[1] < jCenter){
-    regions[0]++
-  }
-  else if(pos[0] < iCenter && pos[1] > jCenter){
-    regions[1]++
-  }
-  else if(pos[0] > iCenter && pos[1] < jCenter){
-    regions[2]++
-  }
-  else if(pos[0] > iCenter && pos[1] > jCenter){
-    regions[3]++
-  }
-  else{
-    console.log("error")
+for(let i = 0; i < heightMax; i++){
+  for(let j = 0; j < widthMax; j++){
+    let r
+    if(i == iCenter || j == jCenter || mx[i][j] == 0){
+      continue
+    }
+    else if(i < iCenter && j < jCenter){
+      
+      r= 0
+    }
+    else if(i < iCenter && j > jCenter){
+      r =1
+    }
+    else if(i > iCenter && j < jCenter){
+      r = 2
+    }
+    else if(i > iCenter && j > jCenter){
+      r= 3
+    }
+    else{
+      console.log("error")
+    }
+    if(r!= undefined) regions[r] += mx[i][j]
   }
 }
-  
-console.log(regions.reduce((a,b)=>a*b))
 
-//228447500 is too low
+console.log("part 1:",regions.reduce((a,b)=>a*b)) 
 
-
-
-// console.log(raw)
