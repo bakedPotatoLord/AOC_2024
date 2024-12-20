@@ -5,19 +5,10 @@ const raw = (await getInput(19))
 .split("\n\n")
 
 const stripes = raw[0].split(", ")
-
 const toMake = raw[1].split("\n")
-
-
-
-// console.log(stripes,toMake)
-
 
 let possible = 0
 let allWays = 0
-
-
-
 
 function checkPossible(left:string){
   let q = [left]
@@ -28,9 +19,6 @@ function checkPossible(left:string){
 
   // parent, child[]
   let childMap = new Map<string,string[]>()
-
-  //string, numWays
-  let memo = new Map<string,number>()
 
   let localPossible = 0
 
@@ -47,8 +35,8 @@ function checkPossible(left:string){
         if(parentMap.has(rest)){
           parentMap.get(rest).push(next)
         }else{
-          parentMap.set(rest,[next])}
-
+          parentMap.set(rest,[next])
+        }
         if(childMap.has(next)){
           childMap.get(next).push(rest)
         }else{
@@ -61,11 +49,9 @@ function checkPossible(left:string){
 
   if(localPossible > 0){
     possible++
-    console.log("hi",childMap)
+    let memo = new Map<string,number>()
     allWays += numWays(left)
-    // console.log(numWays(left))
 
-    
     function numWays(s:string){
       if(memo.has(s)) return memo.get(s)
       let m
@@ -76,22 +62,12 @@ function checkPossible(left:string){
       memo.set(s,m)
       return m
     }
-
   }
-
-
 }
+
 for(let m of toMake){
   checkPossible(m)
 }
 
-
-
-
-
-
 console.log("part 1",possible)
-
 console.log("part 2",allWays)
-
-
