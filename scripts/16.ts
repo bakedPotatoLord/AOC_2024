@@ -6,16 +6,18 @@ const raw = (await getInput(16))
 
 const scoreMap = new Map<string, number>()
 
-const pathMap = new Map<string,[vec2,vec2]>()
+const parentMap = new Map<[[vec2,vec2],number],[[vec2,vec2],number]>() // node: parent[]
 
 function toHash(v:[vec2,vec2]){
   return `${v[0].toHash()},${v[1].toHash()}`
 }
 
-dispMatrix(raw)
+// dispMatrix(raw)
 
 let start:[vec2,vec2]
 let end:vec2
+
+let endNodes: [[vec2,vec2],number][] = [];
 
 for(let i = 0;i<raw.length;i++){
   for(let j = 0;j<raw[i].length;j++){
@@ -28,9 +30,9 @@ const q:[[vec2,vec2],number][] = [[start,0]]
 // pathMap.set(toHash(start),[[start]])
 
 while(q.length > 0){
+  let node = q.shift()
 
-
-  const [[pos,dir], score] = q.shift()
+  const [[pos,dir], score] = node
   const value = raw[pos[0]][pos[1]]
 
   // console.log("pos",pos,"dir",dir,"score",score)
@@ -40,14 +42,9 @@ while(q.length > 0){
   const hash = toHash([pos,dir])
   if(scoreMap.has(hash)){
 
-    if(scoreMap.get(hash) > score){
+    if(scoreMap.get(hash) >= score){
       scoreMap.set(hash,score)
-      pathMap.set(hash,[pos,dir])
     } 
-    else if(scoreMap.get(hash) == score){
-
-      continue
-    }
     else continue
     
   }
@@ -57,28 +54,48 @@ while(q.length > 0){
 
   if(vectorEquals(pos,end)){
     // console.log("found end")
+    endNodes.push( node)
   }
 
-  q.push([[pos.copy().add(dir),dir],score + 1])
-  q.push([[pos,dir.copy().rotateClockwise()],score + 1000])
-  q.push([[pos,dir.copy().rotateCounterClockwise()],score + 1000])
+  let children:[[vec2,vec2],number][] = [
+    [[pos.copy().add(dir),dir],score + 1],
+    [[pos,dir.copy().rotateClockwise()],score + 1000],
+    [[pos,dir.copy().rotateCounterClockwise()],score + 1000],
 
-  
+  ]
+
+  for(let child of children){
+    parentMap.set(child,node)
+  }
+  q.push(...children)
 }
 
-const lowest = vec2.dirs4.map(d => scoreMap.get(toHash([end,d]))).reduce((a,b) => Math.min(a,b))
+const lowestScore = endNodes.sort((a,b) => a[1] - b[1])[0][1]
+console.log("part1:",lowestScore) 
 
-console.log("part1:",lowest) 
+const finalistNodes = endNodes.filter(n => n[1] == lowestScore)
 
+
+// console.log(parentMap.get(finalistNodes[0]))
+
+
+let positionSet = new Set<string>()
+
+
+function rec(n:[[vec2,vec2],number]){
+  const [[pos,dir], score] = n
+
+  positionSet.add(pos.toHash())
+
+  const parent = parentMap.get(n)
+  if(parent == undefined) return
+  rec(parent)
+}
 
 //follow the path of the lowest score
 
-console.log(start)
-
-q
-
-while(true){
-
-
-
+for(let node of finalistNodes){
+  rec(node)
 }
+
+console.log("part 2:",positionSet.size) 
