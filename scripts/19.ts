@@ -12,29 +12,25 @@ const toMake = raw[1].split("\n")
 
 // console.log(stripes,toMake)
 
-let open = 0
 
 let possible = 0
 let allWays = 0
 
 
-let memo = new Map<string,number>()
 
 
 function checkPossible(left:string){
-  // console.log(left)
-  // if(left.length == 0) return true
-  // let check = []
-  // for(let stripe of stripes){
-  //   if(left.startsWith(stripe)) check.push(left.slice(stripe.length))
-  //   else continue
-  // }
-  // return check.map(l => checkPossible(l)).includes(true) 
-
   let q = [left]
-
   let visited= new Set<string>()
+
+  // child, parent[]
   let parentMap = new Map<string,string[]>()
+
+  // parent, child[]
+  let childMap = new Map<string,string[]>()
+
+  //string, numWays
+  let memo = new Map<string,number>()
 
   let localPossible = 0
 
@@ -52,52 +48,50 @@ function checkPossible(left:string){
           parentMap.get(rest).push(next)
         }else{
           parentMap.set(rest,[next])}
-      } 
+
+        if(childMap.has(next)){
+          childMap.get(next).push(rest)
+        }else{
+          childMap.set(next,[rest])
+        }
+      }
     }
     visited.add(next)
-    // console.log(q) 
-
   }
-  // console.log(parentMap)
-  // console.log(localPossible)
+
   if(localPossible > 0){
     possible++
+    console.log("hi",childMap)
+    allWays += numWays(left)
+    // console.log(numWays(left))
 
-    let a = decode(parentMap,left)
-    console.log(a)
-  }
-  
+    
+    function numWays(s:string){
+      if(memo.has(s)) return memo.get(s)
+      let m
+      if(s == "") m=1
+      else if(!childMap.has(s)) m = 0
+      else m= childMap.get(s).map(c => numWays(c)).reduce((a,b) => a+b,0)
 
-
-}
-let i = 0
-let allCount = 0
-for(let m of toMake){
-
-  // console.log(i)
-  checkPossible(m)
-  // recurseCheckPossible(m)
-  // console.log(i/toMake.length)
-  // i++
-}
-
-
-function decode(parentMap:Map<string,string[]>,s:string){
-
-  if(memo.has(s)) return memo.get(s)
-
-  else{
-    if(!parentMap.has(s)){
-      return 0
+      memo.set(s,m)
+      return m
     }
-    return numberSum(parentMap.get(s).map(l => decode(parentMap,l)))
+
   }
+
+
 }
+for(let m of toMake){
+  checkPossible(m)
+}
+
+
+
 
 
 
 console.log("part 1",possible)
 
-console.log("part 2",allCount) 
+console.log("part 2",allWays)
 
 
