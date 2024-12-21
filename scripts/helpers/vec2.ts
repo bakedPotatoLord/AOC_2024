@@ -137,7 +137,7 @@ export default class vec2 extends Array<number>{
     return `${this[0]},${this[1]}`
   }
 
-  public fromHash(s:string){
+  public static fromHash(s:string){
     let [x,y] = s.split(",")
     return new vec2(x,y)
   }
