@@ -1,5 +1,5 @@
 import {dispMatrix, getInput, numberSum, v2, vectorEquals, vec2} from './helpers'
-
+import fs from "node:fs/promises"
 import  * as math from 'mathjs'
 
 const raw = (await getInput(14))
@@ -7,7 +7,7 @@ const raw = (await getInput(14))
 .map(sl=>sl.split(/,|\:\ |\=|\+|\ / ))
 .map((a)=>[v2(a[2],a[1]),v2(a[5],a[4])])
 
-
+let disp = ""
 
 let heightMax = 0
 let widthMax = 0
@@ -28,12 +28,12 @@ function outside(pos:vec2){
   return pos[1] < 0 || pos[1] > widthMax || pos[0] < 0 || pos[0] > heightMax
 }
 
-const runs = 100
+const runs = 10000
 
 let mx = Array(heightMax).fill(0).map(_ => Array(widthMax).fill(0))
 
 for(let i = 0; i < runs+1; i++){
-
+  disp += "\n\n\n"+i+"\n"
   mx = Array(heightMax).fill(0).map(_ => Array(widthMax).fill(0))
 
   for(let r of raw){
@@ -54,14 +54,23 @@ for(let i = 0; i < runs+1; i++){
     pos[1] =  mod(pos[1] , widthMax )
   }
 
-  // let copy = structuredClone(mx)
+  let copy = structuredClone(mx) 
 
-  // for(let i = 0; i < copy.length; i++){
-  //   for(let j = 0; j < copy[0].length; j++){
-  //     if(copy[i][j] == 0) mx[i][j] = "."
-  //   }
-  // }
-  // dispMatrix(copy) 
+  for(let i = 0; i < copy.length; i++){
+    for(let j = 0; j < copy[0].length; j++){
+      if(copy[i][j] == 0) copy[i][j] = " "
+    }
+  }
+
+  let str = copy.map(r=>r.join("")).join("\n")
+
+  if(Array.from(str.match(/11111111/)?? []).length >0){
+    // console.log("not found")
+    disp += str
+    console.log("part 2:",i)
+    console.log(str)
+  }else{
+  }
 }
 
 
@@ -98,3 +107,4 @@ for(let i = 0; i < heightMax; i++){
 
 console.log("part 1:",regions.reduce((a,b)=>a*b)) 
 
+// await fs.writeFile("./14.txt", disp)
