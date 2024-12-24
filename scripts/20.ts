@@ -8,12 +8,10 @@ const raw = (await getInput(20))
 const scoreMap = new Map<string, number>() // vec2 hash : min seconds
 
 let start : vec2
-let end: vec2
 
 for(let i = 0; i < raw.length; i++){
   for(let j = 0; j < raw[i].length; j++){
     if(raw[i][j] == "S") start = v2(i,j)
-    else if(raw[i][j] == "E") end = v2(i,j)
   }
 }
 
@@ -58,10 +56,12 @@ for(let i = -20; i <= 20; i++){
 
 for(let p of nonWall){
   let pVec = vec2.fromHash(p)
-  let around = vec2.dirs4.map(vec=>vec.cmul(v2(2,2))).map(v=>scoreMap.get(v.add(pVec).toHash()))
+  let around = vec2.dirs4.map(vec=>vec.cmul(2)).map(v=>scoreMap.get(v.add(pVec).toHash()))
   let val = scoreMap.get(p)
   
-  let cheats = around.filter(a => a !== undefined).filter(a => a! > val)
+  let cheats = around
+  .filter(a => a !== undefined)
+  .filter(a => a! > val)
   .map(a => a - val - 2)
   .filter(a => a > 0)
 
@@ -88,7 +88,6 @@ for(let p of nonWall){
 }
 
 let over100 = Array.from(cheatsMap.entries()).filter(([k,v])=>k>=100).map(([k,v])=>v).reduce((a,b)=>a+b,0)
-
 let over1002 = Array.from(cheatsMap2.entries()).filter(([k,v])=>k>=100).map(([k,v])=>v).reduce((a,b)=>a+b,0)
 
 console.log("part1", over100) 
