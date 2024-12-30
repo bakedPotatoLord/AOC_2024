@@ -1,4 +1,5 @@
-import { re } from "mathjs";
+import type vec2 from "./vec2";
+import { v2 } from "./other";
 
 
 export default class Matrix2<T> extends Array<Array<T>> {
@@ -15,13 +16,18 @@ export default class Matrix2<T> extends Array<Array<T>> {
     
   }
 
-  get(i: number, j: number) {
-    if(!this.inBounds(i,j)) return undefined
+  get([i,j]:vec2) {
+    if(!this.inBounds(v2(i,j))) return 
     return this.mx[i][j]
   }
 
+  set([i,j]:vec2, value: T) {
+    if(!this.inBounds(v2(i,j))) return
+    this.mx[i][j] = value
+    return this.mx
+  }
 
-  inBounds(i: number, j: number) {
+  inBounds([i,j]:vec2) {
     return i >= 0 && i < this.height && j >= 0 && j < this.width
   }
 }
