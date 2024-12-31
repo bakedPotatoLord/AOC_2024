@@ -30,4 +30,16 @@ export default class Matrix2<T> extends Array<Array<T>> {
   inBounds([i,j]:vec2) {
     return i >= 0 && i < this.height && j >= 0 && j < this.width
   }
+
+  print(){
+    console.log(this.toString())
+  }
+
+  toString(): string {
+    let acc = ""
+    for(let row of this.mx){
+      acc += row.join("")+"\n"
+    }
+    return acc
+  }
 }
