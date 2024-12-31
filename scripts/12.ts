@@ -31,6 +31,19 @@ for (let i = 0; i < raw.length; i++) {
 
       area += touching.length
       region.push(...touching)
+
+      //do sides calc here
+      
+      for(let i = 0; i < touching.length; i++){ //iterate over rows
+
+        let last
+
+        let j=0
+        while(j < touching.length){ //iterate over columns
+          
+        }
+      }
+
     }
 
     const regionSet = new Set(region.map(l => l.join(",")))
@@ -59,18 +72,6 @@ function gettouching(i: number, j: number) {
 
 console.log("part 1:", numberSum(Array.from(regionCosts.values())))  
 
-function sidesInRow(i,region:vec2[], char:string) {
-  let sides = 0
-  for (let j = 0; j < raw[i].length; j++) {
-    if(raw[i][j] == char && raw[i-1][j]){
-      sides++
-      while (raw[i][j] == char && raw[i-1][j]) j++ 
-      j--
-    }
-  }
-  for (let j = 0; j < raw[i].length; j++) {
-    while (raw[i][j] == char && raw[i+1][j]) j++ 
-      sides++
-  }
-  return sides
-}
+
+
+ 
