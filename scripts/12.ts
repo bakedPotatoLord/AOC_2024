@@ -5,8 +5,6 @@ const raw = (await getInput(12))
 .map(l => l.split(""))
 
 const visited = structuredClone(raw).map(l => l.map(_ => false))
-
-
 const regionCosts = new Map<string, number>()
 const regionCosts2 = new Map<string, number>()
 
@@ -29,25 +27,17 @@ for (let i = 0; i < raw.length; i++) {
 
       area += touching.length
       region.push(...touching)
-
-      
     }
-
     const regionSet = new Set(region.map(l => l.toHash()))
 
     let perimeter = numberSum(region.map((v) => v.neighbors4
     .filter(t =>! regionSet.has(t.toHash())).length))
-
-
-    // console.log("char", char, "area", area, "perimeter", perimeter)
-
-
     const sides = calcBulk(regionSet)
-
+    
+    // console.log("char", char, "area", area, "perimeter", perimeter)
     if(regionCosts.has(char)) regionCosts.set(char, regionCosts.get(char)+ (area* perimeter))
     else regionCosts.set(char, area* perimeter)
   
-
     console.log("char", char, "area", area, "sides", sides)
     if(regionCosts2.has(char)) regionCosts2.set(char, regionCosts2.get(char)+ (area*sides))
     else regionCosts2.set(char, (area*sides))
@@ -55,30 +45,18 @@ for (let i = 0; i < raw.length; i++) {
   }
 }
 
-
 function isOnScreen(i: number, j: number) {
   return i >= 0 && i < raw.length && j >= 0 && j < raw[i].length
 }
 
-
-
-// console.log(regionCosts)
-
 console.log("part 1:", numberSum(Array.from(regionCosts.values())))  
-
 console.log("part 2:", numberSum(Array.from(regionCosts2.values())))
-
 
 //returns number of sides from hash set
 function calcBulk(hashes: Set<string>) {
-
   let sideCt = 0
   const mxc = structuredClone(raw) // matrix copy
-
-  
-
   //do sides calc here
-        
   for(let r = 0; r < 2; r++){ //rotate the matrix 90 degrees
     // console.log(char)
     
@@ -150,6 +128,3 @@ function calcBulk(hashes: Set<string>) {
 
 
 }
-
-// console.log("part 2:", sum)
-
