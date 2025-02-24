@@ -9,6 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "logic-solver": "^2.0.1",
     "mathjs": "^14.0.1",
     "tsx": "^4.19.2"
   }
